@@ -4,7 +4,11 @@ import HomePage from './components/HomePage/homepage'
 import LoginPage from './components/Login/loginpage'
 import SigninPage from './components/Signin/signinpage'
 import UserhomePage from './components/UserhomePage/userhomepage'
-import PaymentPage from './components/PaymentPage/paymentpage'
+import AdminLoginPage from './components/AdminLoginPage/adminloginpage'
+import AdminHomePage from './components/AdminHomePage/adminhomepage'
+import StudentRecordsPage from './components/StudentRecordsPage/studentrecordspage'
+import StudentRecordsPage2 from './components/StudentRecordsPage2/studentrecordspage2'
+
 
 
 function App() {
@@ -17,7 +21,10 @@ function App() {
             <Route path="/loginpage" exact element={<LoginPage/>}></Route>
             <Route path="/signinpage" exact element={<SigninPage/>}></Route>
             <Route path="/userhomepage" exact element={<UserhomePage/>}></Route>
-            <Route path="/paymentpage" exact element={<PaymentPage/>}></Route>
+            <Route path="/adminloginpage" exact element={<AdminLoginPage/>}></Route>
+            <Route path="/adminhomepage" exact element={<AdminHomePage/>}></Route>
+            <Route path="/studentrecordspage" exact element={<StudentRecordsPage/>}></Route>
+            <Route path="/studentrecordspage2" exact element={<StudentRecordsPage2/>}></Route>
           </Routes>
         </div>
       </Router>

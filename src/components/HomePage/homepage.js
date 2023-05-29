@@ -8,7 +8,9 @@ const HomePage = () => {
       <header className="home-header">
           <Box bg={'blue.50'} maxW="1242px" maxH="68px" m='32px' marginLeft="140px" borderColor={'blue.100'} borderWidth={'thin'} borderRadius="md" color={'blue.800'}>
               <Image src='/assets/Getpass logo.svg' position={'relative'} top='13px' left='30px'/>
-              <Button bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>} top="-27px" left="1020px" colorScheme={'blue,100'}>Admin Portal Login</Button>
+              <Link to={'/adminloginpage'}>
+                   <Button bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>} top="-27px" left="1020px" colorScheme={'blue,100'}>Admin Portal Login</Button>
+              </Link>     
               <Text position={'relative'} left="950px" top='-59px' fontWeight='semibold'>Github</Text>  
           </Box>
       </header>
