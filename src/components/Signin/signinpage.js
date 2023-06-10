@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
     const SigninPage = () => {
         
         return (
-          <div className="Signinpage">
+          <div className="Signinpage" style={{'overflow-x': 'hidden'}}>
             <Image src='/assets/login.svg' position={'relative'} height='800px'/>
             <Image src='/assets/Getpass logo.svg' position={'relative'} bottom='760px' left='900px'/>
 

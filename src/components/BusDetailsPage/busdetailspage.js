@@ -8,7 +8,7 @@ const BusDetailsPage = () => {
         transform: 'rotate(270deg)',};
 
     return (
-      <div className="Homepage">
+      <div className="BusDetailspage" style={{'overflow-x': 'hidden'}}>
         <header className="home-header">
               <Box bg={'blue.50'} maxW="1242px" maxH="68px" m='32px' marginLeft="140px" borderColor={'blue.100'} borderWidth={'thin'} borderRadius="md" color={'blue.800'}>
                  <Image src='/assets/Getpass logo.svg' position={'relative'} top='13px' left='30px'/>

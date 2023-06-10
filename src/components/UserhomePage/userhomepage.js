@@ -26,7 +26,7 @@ import { Link } from 'react-router-dom';
         const textStyle = {
          transform: 'rotate(270deg)',};
         return (
-          <div className="UserhomePage">
+          <div className="UserhomePage" style={{'overflow-x': 'hidden'}}>
             <header className="home-header">
               <Box bg={'blue.50'} maxW="1242px" maxH="68px" m='32px' marginLeft="140px" borderColor={'blue.100'} borderWidth={'thin'} borderRadius="md" color={'blue.800'}>
                  <Image src='/assets/Getpass logo.svg' position={'relative'} top='13px' left='30px'/>
@@ -168,7 +168,7 @@ import { Link } from 'react-router-dom';
                        <Box width='130px' marginTop='-6px' marginLeft='160px' height='6px' bgColor={'blue.400'}></Box>
                        <Box width='130px' marginTop='-6px' marginLeft='305px' height='6px' bgColor={'blue.100'}></Box>
                     </DrawerHeader>
-                    <DrawerBody>
+                    <DrawerBody style={{'overflow-x': 'hidden'}}>
                     <Text position={'relative'} top='10px' left='20px' textColor={'blue.800'} textAlign={'left'} fontWeight={'bold'} fontSize={'4xl'}>Payment</Text>
                     <Text position={'relative'} top='5px' left='20px' textColor={'blue.800'} textAlign={'left'} fontWeight={'bold'} fontSize={'4xl'}>Details</Text>
                         <Box borderRadius={'lg'} bgColor={'gray.100'} marginLeft='25' marginTop='30px' width='400px' height='400px'>
