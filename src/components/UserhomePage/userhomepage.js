@@ -33,9 +33,11 @@ import { Link } from 'react-router-dom';
                  <Button bgColor={'blue.100'} rightIcon={<ChevronRightIcon/>} top="-27px" left="1020px" textColor={'blue.500'} onClick={onOpen}>Dreama Paul</Button>
                  <Link to={'/'}>
                     <Button bgColor={'blue.100'} textColor={'blue.500'} position={'relative'} left="765px" top='-27px' fontWeight='semibold'>Log Out</Button>
-                  </Link>    
-                 <Text position={'relative'} left="800px" top='-60px' fontWeight='semibold'>View Buses</Text>
-                 <Text position={'relative'} left="680px" top='-85px' fontWeight='semibold'>Past Passes</Text>
+                  </Link> 
+                 <Link to={'/busdetailspage'}>    
+                   <Button bgColor={'blue.100'} textColor={'blue.500'} position={'relative'} left="540px" top='-27px' fontWeight='semibold'>View Buses</Button>
+                 </Link>  
+                 <Text position={'relative'} left="670px" top='-60px' fontWeight='semibold'>Past Passes</Text>
               </Box>
              </header>
              <Button onClick={openOuterDrawer} bgColor={'blue.400'} leftIcon={<AddIcon marginTop={'1'} h='2'/>} borderRadius='5px' top="20px" left="1160px"textColor={'blue.50'} >Purchase pass</Button>
