@@ -3,9 +3,14 @@ import {Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,
 import {ChevronRightIcon,AddIcon,ChevronLeftIcon} from '@chakra-ui/icons';
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useLocation } from 'react-router-dom';
 
     const UserhomePage = () => {
+       
+        const location = useLocation();
+        const data = location.state?.data || [];
+        console.log(data)
+
         const [isOuterDrawerOpen, setIsOuterDrawerOpen] = useState(false);
         const [isInnerDrawerOpen, setIsInnerDrawerOpen] = useState(false);
         const openOuterDrawer = () => {
@@ -30,7 +35,7 @@ import { Link } from 'react-router-dom';
             <header className="home-header">
               <Box bg={'blue.50'} maxW="1242px" maxH="68px" m='32px' marginLeft="140px" borderColor={'blue.100'} borderWidth={'thin'} borderRadius="md" color={'blue.800'}>
                  <Image src='/assets/Getpass logo.svg' position={'relative'} top='13px' left='30px'/>
-                 <Button bgColor={'blue.100'} rightIcon={<ChevronRightIcon/>} top="-27px" left="1020px" textColor={'blue.500'} onClick={onOpen}>Dreama Paul</Button>
+                 <Button bgColor={'blue.100'} rightIcon={<ChevronRightIcon/>} top="-27px" left="1020px" textColor={'blue.500'} onClick={onOpen}>{data[0].name}</Button>
                  <Link to={'/'}>
                     <Button bgColor={'blue.100'} textColor={'blue.500'} position={'relative'} left="765px" top='-27px' fontWeight='semibold'>Log Out</Button>
                   </Link> 
@@ -46,7 +51,7 @@ import { Link } from 'react-router-dom';
                     <ModalOverlay />
                     <ModalContent>
                          <ModalBody>
-                              <Text fontWeight='semibold' fontSize={'medium'} mb='1rem'><br></br>Name:Dreama Paul <br></br> Username:FIT20CS045<br></br>Password:dreama</Text>
+                              <Text fontWeight='semibold' fontSize={'medium'} mb='1rem'><br></br>Name: {data[0].name} <br></br> Username: {data[0].username}<br></br>Password: {data[0].password}</Text>
                          </ModalBody>
                          <ModalFooter>
                              <Button colorScheme='blue' mr={3} onClick={onClose}>Close</Button>
