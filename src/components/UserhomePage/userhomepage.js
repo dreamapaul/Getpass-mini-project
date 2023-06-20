@@ -3,10 +3,10 @@ import {Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,
 import {ChevronRightIcon,AddIcon,ChevronLeftIcon} from '@chakra-ui/icons';
 import React from 'react';
 import { useState } from 'react';
-import { Link,useLocation } from 'react-router-dom';
-
+import { Link,useLocation} from 'react-router-dom';
+import axios from 'axios';
+    
     const UserhomePage = () => {
-       
         const location = useLocation();
         const data = location.state?.data || [];
         console.log(data)
@@ -19,14 +19,77 @@ import { Link,useLocation } from 'react-router-dom';
         const closeOuterDrawer = () => {
           setIsOuterDrawerOpen(false);
         };
-        const openInnerDrawer = () => {
-          setIsInnerDrawerOpen(true);
-        };
         const closeInnerDrawer = () => {
           setIsInnerDrawerOpen(false);
         };
-        
-        
+        const [boarding_point, setboardingpoint] = useState('');
+        const [destination_point, setdestinationpoint] = useState('');
+        const [No_of_tickets, setnooftickets] = useState('');
+        const [bus_no, setbusno] = useState('');
+        const [name, setname] = useState('');
+        const [bill_no,setbillno]=useState(100);
+          
+
+        const handleboardingpoint = (e) => {
+            setboardingpoint(e.target.value)
+        };
+        const handledestinationpoint = (e) => {
+            setdestinationpoint(e.target.value)
+        };
+
+      const handlebusno = (e) => {
+        setbusno(e.target.value)
+    };
+
+      const handlenooftickets = (e) => {
+        setnooftickets(e.target.value)
+    };
+    const handlebillno = () =>{
+      setbillno(prevX=>prevX+1)
+    }
+
+        const openInnerDrawer = async(e) => {
+          setbillno(prevX=>prevX+1)
+          const formData = {
+            'boarding_point':boarding_point,
+            'destination_point':destination_point,
+            'No_of_tickets': No_of_tickets,
+            'bus_no':bus_no,
+            'name':data[0].name, 
+            'bill_no':bill_no
+        }
+           e.preventDefault();
+            console.log(JSON.stringify(formData))
+    
+            axios.post('http://localhost:8000/bill', formData)
+            .then(response => {
+              setIsInnerDrawerOpen(true);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        };    
+
+        const handleSubmit = async(e) => {
+          e.preventDefault();
+             const response = await axios.post('http://localhost:8000/bill/' + name); 
+              const data=response.data
+              console.log(data)
+              if(name===data[0].name)
+                    {<Flex bgColor={'blue.50'} height='70px' marginTop='20px' width='1242px' marginLeft='140px' borderColor={'blue.100'} borderWidth={'thin'} borderRadius='6px' > 
+                    <Box bgColor={'blue.200'} width='70px' height='36px' marginLeft='-17px' marginTop='17px' textAlign={'center'} borderRadius='6px' lineHeight={'7'} fontSize={'xs'} style={textStyle}>{bus_no}</Box>
+                    <Box bgColor={'blue.100'} width='80px' height='70px' marginLeft='-22px' textColor={'blue.500'} position={'relative'}  lineHeight='65px' fontWeight={'medium'} fontSize={'5xl'} textAlign={'center'}>12</Box>
+                    <Text position={'relative'} textColor={'gray.400'} left="60px" top='10px' fontSize={'smaller'} fontWeight='normal'>Bill No</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="30px" top='30px' fontSize={'lg'} fontWeight='semibold'>{bill_no}</Text>
+                    <Text position={'relative'} textColor={'gray.400'} left="180px" top='10px' fontSize={'smaller'} fontWeight='normal'>From</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="150px" top='30px' fontSize={'lg'} fontWeight='semibold'>{boarding_point}</Text>
+                    <Text position={'relative'} textColor={'gray.400'} left="380px" top='10px' fontSize={'smaller'} fontWeight='normal'>Destination</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="312px" top='30px' fontSize={'lg'} fontWeight='semibold'>{destination_point}</Text>
+                    <Text position={'relative'} textColor={'gray.400'} left="550px" top='10px' fontSize={'smaller'} fontWeight='normal'>No. of tickets</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="482px" top='30px' fontSize={'lg'} fontWeight='semibold'>{No_of_tickets}</Text>
+                </Flex>}
+         };
+
         const { isOpen, onOpen, onClose } = useDisclosure()
         const textStyle = {
          transform: 'rotate(270deg)',};
@@ -58,32 +121,8 @@ import { Link,useLocation } from 'react-router-dom';
                          </ModalFooter>
                      </ModalContent>
             </Modal>
-            <Flex bgColor={'blue.50'} height='70px' marginTop='20px' width='1017px' marginLeft='250px' borderColor={'blue.100'} borderWidth={'thin'} borderRadius='6px' > 
-                <Box bgColor={'blue.200'} width='70px' height='36px' marginLeft='-17px' marginTop='17px' textAlign={'center'} borderRadius='6px' lineHeight={'7'} fontSize={'xs'} style={textStyle}>Bus No.</Box>
-                <Box bgColor={'blue.100'} width='80px' height='70px' marginLeft='-22px' textColor={'blue.500'} position={'relative'}  lineHeight='65px' fontWeight={'medium'} fontSize={'5xl'} textAlign={'center'}>12</Box>
-                <Text position={'relative'} textColor={'gray.400'} left="150px" top='10px' fontSize={'smaller'} fontWeight='normal'>From</Text>
-                <Text position={'relative'} textColor={'blue.700'} left="120px" top='30px' fontSize={'lg'} fontWeight='semibold'>FISAT College</Text>
-                <Text position={'relative'} textColor={'gray.400'} left="400px" top='10px' fontSize={'smaller'} fontWeight='normal'>Destination</Text>
-                <Text position={'relative'} textColor={'blue.700'} left="332px" top='30px' fontSize={'lg'} fontWeight='semibold'>Chalakudy</Text>
-            </Flex>
+            
 
-            <Flex bgColor={'blue.50'} height='70px' marginTop='8px' width='1017px' marginLeft='250px' borderColor={'blue.100'} borderWidth={'thin'} borderRadius='6px' > 
-                <Box bgColor={'blue.200'} width='70px' height='36px' marginLeft='-17px' marginTop='17px' textAlign={'center'} borderRadius='6px' lineHeight={'7'} fontSize={'xs'} style={textStyle}>Bus No.</Box>
-                <Box bgColor={'blue.100'} width='80px' height='70px' marginLeft='-22px' textColor={'blue.500'} position={'relative'}  lineHeight='65px' fontWeight={'medium'} fontSize={'5xl'} textAlign={'center'}>12</Box>
-                <Text position={'relative'} textColor={'gray.400'} left="150px" top='10px' fontSize={'smaller'} fontWeight='normal'>From</Text>
-                <Text position={'relative'} textColor={'blue.700'} left="120px" top='30px' fontSize={'lg'} fontWeight='semibold'>FISAT College</Text>
-                <Text position={'relative'} textColor={'gray.400'} left="400px" top='10px' fontSize={'smaller'} fontWeight='normal'>Destination</Text>
-                <Text position={'relative'} textColor={'blue.700'} left="332px" top='30px' fontSize={'lg'} fontWeight='semibold'>Chalakudy</Text>
-            </Flex>
-
-            <Flex bgColor={'blue.50'} height='70px' marginTop='8px' width='1017px' marginLeft='250px' borderColor={'blue.100'} borderWidth={'thin'} borderRadius='6px' > 
-                <Box bgColor={'blue.200'} width='70px' height='36px' marginLeft='-17px' marginTop='17px' textAlign={'center'} borderRadius='6px' lineHeight={'7'} fontSize={'xs'} style={textStyle}>Bus No.</Box>
-                <Box bgColor={'blue.100'} width='80px' height='70px' marginLeft='-22px' textColor={'blue.500'} position={'relative'}  lineHeight='65px' fontWeight={'medium'} fontSize={'5xl'} textAlign={'center'}>12</Box>
-                <Text position={'relative'} textColor={'gray.400'} left="150px" top='10px' fontSize={'smaller'} fontWeight='normal'>From</Text>
-                <Text position={'relative'} textColor={'blue.700'} left="120px" top='30px' fontSize={'lg'} fontWeight='semibold'>FISAT College</Text>
-                <Text position={'relative'} textColor={'gray.400'} left="400px" top='10px' fontSize={'smaller'} fontWeight='normal'>Destination</Text>
-                <Text position={'relative'} textColor={'blue.700'} left="332px" top='30px' fontSize={'lg'} fontWeight='semibold'>Chalakudy</Text>
-            </Flex>
             <div style={{ overflow: 'hidden' }}>
             <Drawer closeOnOverlayClick={false} size={'md'} isOpen={isOuterDrawerOpen} onClose={closeOuterDrawer} placement='right'>
             <DrawerOverlay />
@@ -94,7 +133,7 @@ import { Link,useLocation } from 'react-router-dom';
                <Box width='130px' marginTop='-6px' marginLeft='160px' height='6px' bgColor={'blue.100'}></Box>
                <Box width='130px' marginTop='-6px' marginLeft='305px' height='6px' bgColor={'blue.100'}></Box>
                </DrawerHeader>
-               <DrawerBody>
+               <DrawerBody style={{ overflow: 'hidden' }}>
                   <Heading  position={'relative'} left='14px' top='10px' color={'blue.900'} fontSize={'5xl'}>Purchase</Heading>
                   <Heading  position={'relative'} left='14px' top='12px' color={'blue.900'} fontSize={'5xl'}>Pass</Heading>
                   <Text position={'relative'} left='18px' top='40px' fontSize={'md'} textColor={'blue.800'}>From</Text>
@@ -125,7 +164,7 @@ import { Link,useLocation } from 'react-router-dom';
                       <option value='option22'>Muvattupuzha(via perumbavoor)</option>
                       <option value='option23'>Mala(via Koratty)</option>
                   </Select>
-                  <Input position={'relative'} top='60px' left='17px' maxWidth='425px' placeholder={'Select Boarding Point'}/>
+                  <Input type='text' name='boarding_point' value={boarding_point} onChange={handleboardingpoint} position={'relative'} top='60px' left='17px' maxWidth='425px' placeholder={'Select Boarding Point'}/>
 
                   <Text position={'relative'} left='18px' top='80px' fontSize={'md'} textColor={'blue.800'}>To</Text>
                   <Select maxWidth='425px' left='17px' top='95px' placeholder='Select Place'>
@@ -155,16 +194,18 @@ import { Link,useLocation } from 'react-router-dom';
                       <option value='option22'>Muvattupuzha(via perumbavoor)</option>
                       <option value='option23'>Mala(via Koratty)</option>
                   </Select>
-                  <Input position={'relative'} top='100px' left='17px' maxWidth='425px' placeholder={'Select Destination Point'}/>
+                  <Input type='text' name='destination_point' value={destination_point} onChange={handledestinationpoint} position={'relative'} top='100px' left='17px' maxWidth='425px' placeholder={'Select Destination Point'}/>
 
                   <Text position={'relative'} left='18px' top='130px' fontSize={'md'} textColor={'blue.800'}>Number of tickets</Text>
-                  <Input position={'relative'} top='140px' left='17px' maxWidth='425px' placeholder={'Enter number of tickets'}/>
+                  <Input type='text' name='No_of_tickets' value={No_of_tickets} onChange={handlenooftickets} position={'relative'} width='200px' top='140px' left='17px' maxWidth='425px' placeholder={'Enter number of tickets'}/>
+                  <Text position={'relative'} left='245px' top='66px' fontSize={'md'} textColor={'blue.800'}>Bus No.</Text>
+                  <Input type='text' name='bus_no' value={bus_no} onChange={handlebusno} position={'relative'} width='200px' top='76px' left='240px' maxWidth='425px' placeholder={'Enter bus number'}/>
                </DrawerBody>
                <DrawerFooter>
                   <Button borderWidth={'thin'} borderColor={'blue.200'}  top='2' textAlign={'start'} width='150px' height='60px' left='-30px' borderRadius={'sm'} bgColor={'blue.100'} leftIcon={<ChevronLeftIcon/>} onClick={closeOuterDrawer}>Cancel</Button>
                   <Button onClick={openInnerDrawer} width='270px' height='60px' left='-23px' top='2' borderRadius={'sm'} bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>}>Proceed</Button>
 
-                  <Drawer isOpen={isInnerDrawerOpen} onClose={closeInnerDrawer} closeOnOverlayClick={false} size={'md'} placement="right">
+                  <Drawer isOpen={isInnerDrawerOpen} onClose={closeInnerDrawer}  onChange={handlebillno} closeOnOverlayClick={false} size={'md'} placement="right">
                   <DrawerOverlay />
                   <DrawerContent>
                     <DrawerCloseButton />
@@ -185,16 +226,16 @@ import { Link,useLocation } from 'react-router-dom';
                            <Text position={'relative'} top='60px' left='40px' textColor={'blue.800'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Bus Number</Text>
                            <Text position={'relative'} top='80px' left='40px' textColor={'blue.800'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Destination</Text>
                            <Text position={'relative'} top='100px' left='40px' textColor={'blue.800'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Number of tickets</Text>
-                           <Text position={'relative'} top='-100px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>101</Text>
-                           <Text position={'relative'} top='-80px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Dreama</Text>
-                           <Text position={'relative'} top='-60px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>12</Text>
-                           <Text position={'relative'} top='-40px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Chalakudy</Text>
-                           <Text position={'relative'} top='-20px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>2</Text>
+                           <Text position={'relative'} top='-100px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{bill_no}</Text>
+                           <Text position={'relative'} top='-80px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{data[0].name}</Text>
+                           <Text position={'relative'} top='-60px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{bus_no}</Text>
+                           <Text position={'relative'} top='-40px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{destination_point}</Text>
+                           <Text position={'relative'} top='-20px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{No_of_tickets}</Text>
                         </Box>
                     </DrawerBody>
                     <DrawerFooter>
                         <Button borderWidth={'thin'} borderColor={'blue.200'}  top='2' textAlign={'start'} width='150px' height='60px' left='-30px' borderRadius={'sm'} bgColor={'blue.100'} leftIcon={<ChevronLeftIcon/>} onClick={closeInnerDrawer}>Back</Button>
-                        <Button width='270px' height='60px' left='-23px' top='2' borderRadius={'sm'} bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>}>Proceed</Button>
+                        <Button onClick={handleSubmit}  type='submit'  width='270px' height='60px' left='-23px' top='2' borderRadius={'sm'} bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>}>Proceed</Button>
                   </DrawerFooter>
                    </DrawerContent>
                   </Drawer>

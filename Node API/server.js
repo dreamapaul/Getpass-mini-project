@@ -3,6 +3,7 @@ const mongoose=require('mongoose')
 const app= express()
 const cors = require('cors');
 const Product=require('./models/Signin')
+const Bill=require('./models/payment')
 const port=8000
 
 app.use(cors());
@@ -38,10 +39,34 @@ app.post('/signin',async(req,res)=>{
     }
 })
 
-//homepage
+//bill
+app.post('/bill',async(req,res)=>{
+    try {
+        const bill=await Bill.create(req.body)
+        res.status(200).json(bill);
+        
+    } catch (error) {
+       console.log(error.message);
+       res.status(500).json({message: error.message}) 
+    }
+})
+
+//past passes
+app.post('/bill/:name',async(req,res)=>{
+    try {
+        const {name}=req.params
+        const getbill=await Bill.find({name});
+        if(!getbill){
+            return res.status(404).json({message:'Cannot Find account with name ${name}'})
+            }
+        res.status(200).json(getbill)
+    } catch (error) {
+        res.status(500).json({message: error.message}) 
+    }
+})
 
 
-mongoose.connect('mongodb+srv://GetPass:getpass@getpass.wlzryhy.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://GetPass:getpass@getpass.wlzryhy.mongodb.net/')
 .then(() =>{
     app.listen(port,()=>{
         console.log('Connected to MongoDB')
