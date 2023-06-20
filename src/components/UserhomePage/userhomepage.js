@@ -70,26 +70,6 @@ import axios from 'axios';
             });
         };    
 
-        const handleSubmit = async(e) => {
-          e.preventDefault();
-             const response = await axios.post('http://localhost:8000/bill/' + name); 
-              const data=response.data
-              console.log(data)
-              if(name===data[0].name)
-                    {<Flex bgColor={'blue.50'} height='70px' marginTop='20px' width='1242px' marginLeft='140px' borderColor={'blue.100'} borderWidth={'thin'} borderRadius='6px' > 
-                    <Box bgColor={'blue.200'} width='70px' height='36px' marginLeft='-17px' marginTop='17px' textAlign={'center'} borderRadius='6px' lineHeight={'7'} fontSize={'xs'} style={textStyle}>{bus_no}</Box>
-                    <Box bgColor={'blue.100'} width='80px' height='70px' marginLeft='-22px' textColor={'blue.500'} position={'relative'}  lineHeight='65px' fontWeight={'medium'} fontSize={'5xl'} textAlign={'center'}>12</Box>
-                    <Text position={'relative'} textColor={'gray.400'} left="60px" top='10px' fontSize={'smaller'} fontWeight='normal'>Bill No</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="30px" top='30px' fontSize={'lg'} fontWeight='semibold'>{bill_no}</Text>
-                    <Text position={'relative'} textColor={'gray.400'} left="180px" top='10px' fontSize={'smaller'} fontWeight='normal'>From</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="150px" top='30px' fontSize={'lg'} fontWeight='semibold'>{boarding_point}</Text>
-                    <Text position={'relative'} textColor={'gray.400'} left="380px" top='10px' fontSize={'smaller'} fontWeight='normal'>Destination</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="312px" top='30px' fontSize={'lg'} fontWeight='semibold'>{destination_point}</Text>
-                    <Text position={'relative'} textColor={'gray.400'} left="550px" top='10px' fontSize={'smaller'} fontWeight='normal'>No. of tickets</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="482px" top='30px' fontSize={'lg'} fontWeight='semibold'>{No_of_tickets}</Text>
-                </Flex>}
-         };
-
         const { isOpen, onOpen, onClose } = useDisclosure()
         const textStyle = {
          transform: 'rotate(270deg)',};
@@ -122,7 +102,18 @@ import axios from 'axios';
                      </ModalContent>
             </Modal>
             
-
+             <Flex bgColor={'blue.50'} height='70px' marginTop='20px' width='1242px' marginLeft='140px' borderColor={'blue.100'} borderWidth={'thin'} borderRadius='6px' > 
+                    <Box bgColor={'blue.200'} width='70px' height='36px' marginLeft='-17px' marginTop='17px' textAlign={'center'} borderRadius='6px' lineHeight={'7'} fontSize={'xs'} style={textStyle}>{bus_no}</Box>
+                    <Box bgColor={'blue.100'} width='80px' height='70px' marginLeft='-22px' textColor={'blue.500'} position={'relative'}  lineHeight='65px' fontWeight={'medium'} fontSize={'5xl'} textAlign={'center'}>12</Box>
+                    <Text position={'relative'} textColor={'gray.400'} left="60px" top='10px' fontSize={'smaller'} fontWeight='normal'>Bill No</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="30px" top='30px' fontSize={'lg'} fontWeight='semibold'>{data[0].bill_no}</Text>
+                    <Text position={'relative'} textColor={'gray.400'} left="180px" top='10px' fontSize={'smaller'} fontWeight='normal'>From</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="150px" top='30px' fontSize={'lg'} fontWeight='semibold'>{data[0].boarding_point}</Text>
+                    <Text position={'relative'} textColor={'gray.400'} left="380px" top='10px' fontSize={'smaller'} fontWeight='normal'>Destination</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="312px" top='30px' fontSize={'lg'} fontWeight='semibold'>{data[0].destination_point}</Text>
+                    <Text position={'relative'} textColor={'gray.400'} left="550px" top='10px' fontSize={'smaller'} fontWeight='normal'>No. of tickets</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="482px" top='30px' fontSize={'lg'} fontWeight='semibold'>{data[0].No_of_tickets}</Text>
+                </Flex>
             <div style={{ overflow: 'hidden' }}>
             <Drawer closeOnOverlayClick={false} size={'md'} isOpen={isOuterDrawerOpen} onClose={closeOuterDrawer} placement='right'>
             <DrawerOverlay />
@@ -235,7 +226,7 @@ import axios from 'axios';
                     </DrawerBody>
                     <DrawerFooter>
                         <Button borderWidth={'thin'} borderColor={'blue.200'}  top='2' textAlign={'start'} width='150px' height='60px' left='-30px' borderRadius={'sm'} bgColor={'blue.100'} leftIcon={<ChevronLeftIcon/>} onClick={closeInnerDrawer}>Back</Button>
-                        <Button onClick={handleSubmit}  type='submit'  width='270px' height='60px' left='-23px' top='2' borderRadius={'sm'} bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>}>Proceed</Button>
+                        <Button type='submit'  width='270px' height='60px' left='-23px' top='2' borderRadius={'sm'} bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>}>Proceed</Button>
                   </DrawerFooter>
                    </DrawerContent>
                   </Drawer>
