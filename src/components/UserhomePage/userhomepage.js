@@ -2,17 +2,18 @@ import {Image,Input,Text,Button,Box,Modal, ModalOverlay, ModalContent,ModalBody,
 import {Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,Select} from '@chakra-ui/react'
 import {ChevronRightIcon,AddIcon,ChevronLeftIcon} from '@chakra-ui/icons';
 import React from 'react';
-import { useState } from 'react';
+import { useState,useEffect} from 'react';
 import { Link,useLocation} from 'react-router-dom';
 import axios from 'axios';
     
     const UserhomePage = () => {
         const location = useLocation();
-        const data = location.state?.data || [];
-        console.log(data)
+        const ldata = location.state?.data || [];
+        console.log(ldata)
 
         const [isOuterDrawerOpen, setIsOuterDrawerOpen] = useState(false);
         const [isInnerDrawerOpen, setIsInnerDrawerOpen] = useState(false);
+        const [bills, setBills] = useState([]);
         const openOuterDrawer = () => {
           setIsOuterDrawerOpen(true);
         };
@@ -26,8 +27,8 @@ import axios from 'axios';
         const [destination_point, setdestinationpoint] = useState('');
         const [No_of_tickets, setnooftickets] = useState('');
         const [bus_no, setbusno] = useState('');
-        const [name, setname] = useState('');
         const [bill_no,setbillno]=useState(100);
+        const[name]=useState(ldata[0].name)
           
 
         const handleboardingpoint = (e) => {
@@ -55,12 +56,11 @@ import axios from 'axios';
             'destination_point':destination_point,
             'No_of_tickets': No_of_tickets,
             'bus_no':bus_no,
-            'name':data[0].name, 
+            'name':ldata[0].name, 
             'bill_no':bill_no
         }
            e.preventDefault();
             console.log(JSON.stringify(formData))
-    
             axios.post('http://localhost:8000/bill', formData)
             .then(response => {
               setIsInnerDrawerOpen(true);
@@ -69,6 +69,18 @@ import axios from 'axios';
                 console.error(error);
             });
         };    
+        
+        useEffect(() => {
+          const fetchBills = async () => {
+            try {
+              const response = await axios.post('http://localhost:8000/bill/'+ name);
+              setBills(response.data);
+            } catch (error) {
+              console.error("Error fetching bills:", error);
+            }
+          };     
+          fetchBills();
+        }, []);
 
         const { isOpen, onOpen, onClose } = useDisclosure()
         const textStyle = {
@@ -78,7 +90,7 @@ import axios from 'axios';
             <header className="home-header">
               <Box bg={'blue.50'} maxW="1242px" maxH="68px" m='32px' marginLeft="140px" borderColor={'blue.100'} borderWidth={'thin'} borderRadius="md" color={'blue.800'}>
                  <Image src='/assets/Getpass logo.svg' position={'relative'} top='13px' left='30px'/>
-                 <Button bgColor={'blue.100'} rightIcon={<ChevronRightIcon/>} top="-27px" left="1020px" textColor={'blue.500'} onClick={onOpen}>{data[0].name}</Button>
+                 <Button bgColor={'blue.100'} rightIcon={<ChevronRightIcon/>} top="-27px" left="1020px" textColor={'blue.500'} onClick={onOpen}>{ldata[0].name}</Button>
                  <Link to={'/'}>
                     <Button bgColor={'blue.100'} textColor={'blue.500'} position={'relative'} left="765px" top='-27px' fontWeight='semibold'>Log Out</Button>
                   </Link> 
@@ -94,26 +106,27 @@ import axios from 'axios';
                     <ModalOverlay />
                     <ModalContent>
                          <ModalBody>
-                              <Text fontWeight='semibold' fontSize={'medium'} mb='1rem'><br></br>Name: {data[0].name} <br></br> Username: {data[0].username}<br></br>Password: {data[0].password}</Text>
+                              <Text fontWeight='semibold' fontSize={'medium'} mb='1rem'><br></br>Name: {ldata[0].name} <br></br> Username: {ldata[0].username}<br></br>Password: {ldata[0].password}</Text>
                          </ModalBody>
                          <ModalFooter>
                              <Button colorScheme='blue' mr={3} onClick={onClose}>Close</Button>
                          </ModalFooter>
                      </ModalContent>
             </Modal>
-            
+            {bills.map((item) => (
              <Flex bgColor={'blue.50'} height='70px' marginTop='20px' width='1242px' marginLeft='140px' borderColor={'blue.100'} borderWidth={'thin'} borderRadius='6px' > 
-                    <Box bgColor={'blue.200'} width='70px' height='36px' marginLeft='-17px' marginTop='17px' textAlign={'center'} borderRadius='6px' lineHeight={'7'} fontSize={'xs'} style={textStyle}>{bus_no}</Box>
-                    <Box bgColor={'blue.100'} width='80px' height='70px' marginLeft='-22px' textColor={'blue.500'} position={'relative'}  lineHeight='65px' fontWeight={'medium'} fontSize={'5xl'} textAlign={'center'}>12</Box>
+                    <Box bgColor={'blue.200'} width='70px' height='36px' marginLeft='-17px' marginTop='17px' textAlign={'center'} borderRadius='6px' lineHeight={'7'} fontSize={'xs'} style={textStyle}>Bus no</Box>
+                    <Box bgColor={'blue.100'} width='80px' height='70px' marginLeft='-22px' textColor={'blue.500'} position={'relative'}  lineHeight='65px' fontWeight={'medium'} fontSize={'5xl'} textAlign={'center'}>{item.bus_no}</Box>
                     <Text position={'relative'} textColor={'gray.400'} left="60px" top='10px' fontSize={'smaller'} fontWeight='normal'>Bill No</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="30px" top='30px' fontSize={'lg'} fontWeight='semibold'>{data[0].bill_no}</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="30px" top='30px' fontSize={'lg'} fontWeight='semibold'>{item.bill_no}</Text>
                     <Text position={'relative'} textColor={'gray.400'} left="180px" top='10px' fontSize={'smaller'} fontWeight='normal'>From</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="150px" top='30px' fontSize={'lg'} fontWeight='semibold'>{data[0].boarding_point}</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="150px" top='30px' fontSize={'lg'} fontWeight='semibold'>{item.boarding_point}</Text>
                     <Text position={'relative'} textColor={'gray.400'} left="380px" top='10px' fontSize={'smaller'} fontWeight='normal'>Destination</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="312px" top='30px' fontSize={'lg'} fontWeight='semibold'>{data[0].destination_point}</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="312px" top='30px' fontSize={'lg'} fontWeight='semibold'>{item.destination_point}</Text>
                     <Text position={'relative'} textColor={'gray.400'} left="550px" top='10px' fontSize={'smaller'} fontWeight='normal'>No. of tickets</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="482px" top='30px' fontSize={'lg'} fontWeight='semibold'>{data[0].No_of_tickets}</Text>
+                    <Text position={'relative'} textColor={'blue.700'} left="482px" top='30px' fontSize={'lg'} fontWeight='semibold'>{item.No_of_tickets}</Text>
                 </Flex>
+                ))}
             <div style={{ overflow: 'hidden' }}>
             <Drawer closeOnOverlayClick={false} size={'md'} isOpen={isOuterDrawerOpen} onClose={closeOuterDrawer} placement='right'>
             <DrawerOverlay />
@@ -218,7 +231,7 @@ import axios from 'axios';
                            <Text position={'relative'} top='80px' left='40px' textColor={'blue.800'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Destination</Text>
                            <Text position={'relative'} top='100px' left='40px' textColor={'blue.800'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Number of tickets</Text>
                            <Text position={'relative'} top='-100px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{bill_no}</Text>
-                           <Text position={'relative'} top='-80px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{data[0].name}</Text>
+                           <Text position={'relative'} top='-80px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{ldata[0].name}</Text>
                            <Text position={'relative'} top='-60px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{bus_no}</Text>
                            <Text position={'relative'} top='-40px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{destination_point}</Text>
                            <Text position={'relative'} top='-20px' left='220px' textColor={'gray.500'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>{No_of_tickets}</Text>
@@ -226,7 +239,7 @@ import axios from 'axios';
                     </DrawerBody>
                     <DrawerFooter>
                         <Button borderWidth={'thin'} borderColor={'blue.200'}  top='2' textAlign={'start'} width='150px' height='60px' left='-30px' borderRadius={'sm'} bgColor={'blue.100'} leftIcon={<ChevronLeftIcon/>} onClick={closeInnerDrawer}>Back</Button>
-                        <Button type='submit'  width='270px' height='60px' left='-23px' top='2' borderRadius={'sm'} bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>}>Proceed</Button>
+                        <Button type='submit' width='270px' height='60px' left='-23px' top='2' borderRadius={'sm'} bgColor={'blue.400'} rightIcon={<ChevronRightIcon/>}>Proceed</Button>
                   </DrawerFooter>
                    </DrawerContent>
                   </Drawer>
