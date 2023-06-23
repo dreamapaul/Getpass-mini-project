@@ -27,6 +27,7 @@ import axios from 'axios';
         const [destination_point, setdestinationpoint] = useState('');
         const [No_of_tickets, setnooftickets] = useState('');
         const [bus_no, setbusno] = useState('');
+        const [price,setPrice] = useState('');
         const [bill_no,setbillno]=useState(100);
         const[name]=useState(ldata[0].name)
           
@@ -37,11 +38,13 @@ import axios from 'axios';
         const handledestinationpoint = (e) => {
             setdestinationpoint(e.target.value)
         };
+        const handleprice = (e) => {
+          setPrice(e.target.value)
+      };
 
       const handlebusno = (e) => {
         setbusno(e.target.value)
     };
-
       const handlenooftickets = (e) => {
         setnooftickets(e.target.value)
     };
@@ -57,7 +60,8 @@ import axios from 'axios';
             'No_of_tickets': No_of_tickets,
             'bus_no':bus_no,
             'name':ldata[0].name, 
-            'bill_no':bill_no
+            'bill_no':bill_no,
+            'price':price
         }
            e.preventDefault();
             console.log(JSON.stringify(formData))
@@ -81,6 +85,7 @@ import axios from 'axios';
           };     
           fetchBills();
         }, []);
+
 
         const { isOpen, onOpen, onClose } = useDisclosure()
         const textStyle = {
@@ -142,36 +147,6 @@ import axios from 'axios';
                   <Heading  position={'relative'} left='14px' top='12px' color={'blue.900'} fontSize={'5xl'}>Pass</Heading>
                   <Text position={'relative'} left='18px' top='40px' fontSize={'md'} textColor={'blue.800'}>From</Text>
                   <Select maxWidth='425px' left='17px' top='55px' placeholder='Select Route'>
-                  <option value='option1'>FISAT College</option>
-                      <option value='option2'>Panampilly Nagar(Via vytilla)</option>
-                      <option value='option3'>Kumbalam toll-Vytila</option>
-                      <option value='option4'>High Court(Via Kaloor)</option>
-                      <option value='option5'>Trippunithura(via Irimpanam)</option>
-                      <option value='option6'>Koonammavu(via Aluva Paravur JN.)</option>
-                      <option value='option7'>Kakkanad</option>
-                      <option value='option8'>Mannuthy(via Chalakudy)</option>
-                      <option value='option9'>Kottapady(via Neeliswaram)</option>
-                      <option value='option10'>Kizhakkambalam(via Aluva)</option>
-                      <option value='option11'>Thrissur(via Chalakudy)</option>
-                      <option value='option12'>Thoppumpady(via Kaloor)</option>
-                      <option value='option13'>Pariyaram(via Chalakudy)</option>
-                      <option value='option14'>Njarakkal-NParavur(via Aluva)</option>
-                      <option value='option15'>Kothamangalam(via Perumbavoor)</option>
-                      <option value='option16'>Muppathadom</option>
-                      <option value='option17'>Aluva</option>
-                      <option value='option18'>Pettah(via Vytilla)</option>
-                      <option value='option19'>Irinjalakuda(via Chalakudy)</option>
-                      <option value='option20'>Pattimattom(via Perumbavoor)</option>
-                      <option value='option21'>Kothamangalam(via Perumbavoor)</option>
-                      <option value='option22'>Paravur(via Manjaly)</option>
-                      <option value='option23'>Kodungaloor(via Aluva,Paravur JN.)</option>
-                      <option value='option22'>Muvattupuzha(via perumbavoor)</option>
-                      <option value='option23'>Mala(via Koratty)</option>
-                  </Select>
-                  <Input type='text' name='boarding_point' value={boarding_point} onChange={handleboardingpoint} position={'relative'} top='60px' left='17px' maxWidth='425px' placeholder={'Select Boarding Point'}/>
-
-                  <Text position={'relative'} left='18px' top='80px' fontSize={'md'} textColor={'blue.800'}>To</Text>
-                  <Select maxWidth='425px' left='17px' top='95px' placeholder='Select Place'>
                       <option value='option1'>FISAT College</option>
                       <option value='option2'>Panampilly Nagar(Via vytilla)</option>
                       <option value='option3'>Kumbalam toll-Vytila</option>
@@ -198,6 +173,37 @@ import axios from 'axios';
                       <option value='option22'>Muvattupuzha(via perumbavoor)</option>
                       <option value='option23'>Mala(via Koratty)</option>
                   </Select>
+
+                  <Input type='text' name='boarding_point' value={boarding_point} onChange={handleboardingpoint} position={'relative'} top='60px' left='17px' maxWidth='425px' placeholder={'Select Boarding Point'}/>
+
+                  <Text position={'relative'} left='18px' top='80px' fontSize={'md'} textColor={'blue.800'}>To</Text>
+                  <Select value={price} onChange={handleprice} maxWidth='425px' left='17px' top='95px' placeholder='Select Place'>
+                      <option value='0'>FISAT College</option>
+                      <option value='50'>Panampilly Nagar(Via vytilla)</option>
+                      <option value='50'>Kumbalam toll-Vytila</option>
+                      <option value='50'>High Court(Via Kaloor)</option>
+                      <option value='60'>Trippunithura(via Irimpanam)</option>
+                      <option value='35'>Koonammavu(via Aluva Paravur JN.)</option>
+                      <option value='50'>Kakkanad</option>
+                      <option value='35'>Mannuthy(via Chalakudy)</option>
+                      <option value='50'>Kottapady(via Neeliswaram)</option>
+                      <option value='35'>Kizhakkambalam(via Aluva)</option>
+                      <option value='60'>Thrissur(via Chalakudy)</option>
+                      <option value='50'>Thoppumpady(via Kaloor)</option>
+                      <option value='35'>Pariyaram(via Chalakudy)</option>
+                      <option value='50'>Njarakkal-NParavur(via Aluva)</option>
+                      <option value='60'>Kothamangalam(via Perumbavoor)</option>
+                      <option value='50'>Muppathadom</option>
+                      <option value='35'>Aluva</option>
+                      <option value='50'>Pettah(via Vytilla)</option>
+                      <option value='50'>Irinjalakuda(via Chalakudy)</option>
+                      <option value='50'>Pattimattom(via Perumbavoor)</option>
+                      <option value='60'>Kothamangalam(via Perumbavoor)</option>
+                      <option value='60'>Paravur(via Manjaly)</option>
+                      <option value='50'>Kodungaloor(via Aluva,Paravur JN.)</option>
+                      <option value='35'>Muvattupuzha(via perumbavoor)</option>
+                      <option value='35'>Mala(via Koratty)</option>
+                  </Select>
                   <Input type='text' name='destination_point' value={destination_point} onChange={handledestinationpoint} position={'relative'} top='100px' left='17px' maxWidth='425px' placeholder={'Select Destination Point'}/>
 
                   <Text position={'relative'} left='18px' top='130px' fontSize={'md'} textColor={'blue.800'}>Number of tickets</Text>
@@ -223,7 +229,7 @@ import axios from 'axios';
                     <Text position={'relative'} top='5px' left='20px' textColor={'blue.800'} textAlign={'left'} fontWeight={'bold'} fontSize={'4xl'}>Details</Text>
                         <Box borderRadius={'lg'} bgColor={'gray.100'} marginLeft='25' marginTop='30px' width='400px' height='400px'>
                            <Text position={'relative'} textColor={'blue.700'} fontSize={'md'} fontWeight={'medium'} top='30px' left='40px' >Total Payment</Text>
-                           <Heading position={'relative'} textColor={'blue.900'} left='40px' top='30px' fontSize={'5xl'}fontWeight={'bold'} >Rs 400</Heading>
+                           <Heading position={'relative'} textColor={'blue.900'} left='40px' top='30px' fontSize={'5xl'}fontWeight={'bold'} >Rs {price}</Heading>
                            <Text position={'relative'} top='15px' left='15px' fontSize={'4xl'}  textColor={'gray.300'}>-------------------------</Text>
                            <Text position={'relative'} top='20px' left='40px' textColor={'blue.800'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Bill Number</Text>
                            <Text position={'relative'} top='40px' left='40px' textColor={'blue.800'} fontSize={'md'} letterSpacing={'wide'} fontWeight={'medium'}>Name</Text>

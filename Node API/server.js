@@ -51,6 +51,16 @@ app.post('/bill',async(req,res)=>{
     }
 })
 
+app.get('/bill', async (req, res) => {
+    try {
+      const bill = await Bill.find();
+      res.json(bill);
+    } catch (error) {
+      console.error('Error fetching bills:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
 //past passes
 app.post('/bill/:name',async(req,res)=>{
     try {

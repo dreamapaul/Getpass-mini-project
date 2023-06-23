@@ -27,6 +27,10 @@ const billSchema=mongoose.Schema(
             type:String,
             required:[true,"Please enter the bill number."]
         },
+        price:{
+            type:String,
+            required:[true,"Please enter the price."]
+        },
     },
     {timestamps:true}
 )

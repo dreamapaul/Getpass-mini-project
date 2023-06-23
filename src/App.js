@@ -7,7 +7,6 @@ import UserhomePage from './components/UserhomePage/userhomepage'
 import AdminLoginPage from './components/AdminLoginPage/adminloginpage'
 import AdminHomePage from './components/AdminHomePage/adminhomepage'
 import StudentRecordsPage from './components/StudentRecordsPage/studentrecordspage'
-import StudentRecordsPage2 from './components/StudentRecordsPage2/studentrecordspage2'
 import BusDetailsPage from './components/BusDetailsPage/busdetailspage'
 
 
@@ -25,7 +24,6 @@ function App() {
             <Route path="/adminloginpage" exact element={<AdminLoginPage/>}></Route>
             <Route path="/adminhomepage" exact element={<AdminHomePage/>}></Route>
             <Route path="/studentrecordspage" exact element={<StudentRecordsPage/>}></Route>
-            <Route path="/studentrecordspage2" exact element={<StudentRecordsPage2/>}></Route>
             <Route path="/busdetailspage" exact element={<BusDetailsPage/>}></Route>
           </Routes>
         </div>
