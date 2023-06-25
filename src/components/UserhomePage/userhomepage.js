@@ -1,4 +1,4 @@
-import {Image,Input,Text,Button,Box,Modal, ModalOverlay, ModalContent,ModalBody, ModalFooter,useDisclosure,Heading,Flex} from '@chakra-ui/react'; 
+import {Image,Input,Text,Button,Stack,Box,Modal, ModalOverlay, ModalContent,ModalBody, ModalFooter,useDisclosure,Heading,Flex} from '@chakra-ui/react'; 
 import {Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,Select} from '@chakra-ui/react'
 import {ChevronRightIcon,AddIcon,ChevronLeftIcon} from '@chakra-ui/icons';
 import React from 'react';
@@ -14,6 +14,7 @@ import axios from 'axios';
         const [isOuterDrawerOpen, setIsOuterDrawerOpen] = useState(false);
         const [isInnerDrawerOpen, setIsInnerDrawerOpen] = useState(false);
         const [bills, setBills] = useState([]);
+        const[payment,setPayment]=useState([]);
         const openOuterDrawer = () => {
           setIsOuterDrawerOpen(true);
         };
@@ -78,7 +79,9 @@ import axios from 'axios';
           const fetchBills = async () => {
             try {
               const response = await axios.post('http://localhost:8000/bill/'+ name);
+              const bill = await axios.get('http://localhost:8000/bill/'+name);
               setBills(response.data);
+              setPayment(bill.data);
             } catch (error) {
               console.error("Error fetching bills:", error);
             }
@@ -86,8 +89,25 @@ import axios from 'axios';
           fetchBills();
         }, []);
 
-
-        const { isOpen, onOpen, onClose } = useDisclosure()
+        const downloadPDF = async (billId) => {
+          try {
+            await axios.get(`http://localhost:8000/bill/${billId}/pdf`, {
+              responseType: 'blob',
+            }).then((bill) => {
+              const url = window.URL.createObjectURL(new Blob([bill.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', `bill_${billId}.pdf`);
+              document.body.appendChild(link);
+              link.click();
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        };
+        
+      
+      const { isOpen, onOpen, onClose } = useDisclosure()
         const textStyle = {
          transform: 'rotate(270deg)',};
         return (
@@ -128,9 +148,14 @@ import axios from 'axios';
                     <Text position={'relative'} textColor={'blue.700'} left="150px" top='30px' fontSize={'lg'} fontWeight='semibold'>{item.boarding_point}</Text>
                     <Text position={'relative'} textColor={'gray.400'} left="380px" top='10px' fontSize={'smaller'} fontWeight='normal'>Destination</Text>
                     <Text position={'relative'} textColor={'blue.700'} left="312px" top='30px' fontSize={'lg'} fontWeight='semibold'>{item.destination_point}</Text>
-                    <Text position={'relative'} textColor={'gray.400'} left="550px" top='10px' fontSize={'smaller'} fontWeight='normal'>No. of tickets</Text>
-                    <Text position={'relative'} textColor={'blue.700'} left="482px" top='30px' fontSize={'lg'} fontWeight='semibold'>{item.No_of_tickets}</Text>
-                </Flex>
+                    <Text position={'relative'} textColor={'gray.400'} left="550px" top='10px' fontSize={'smaller'} fontWeight='normal'>Download Bill</Text>
+                </Flex>    ))}
+                {payment.map((pay) => (
+                  <li key={pay._id}>
+                     <Stack direction="row" marginBottom={10}>
+                    <Button left="1165px" top='-237px' width='90px' height='25px' fontSize={'xs'} fontWeight={'semibold'} position={'relative'} bgColor={'blue.100'}  onClick={() => downloadPDF(pay._id)}>Download PDF</Button>
+                    </Stack>
+                  </li>
                 ))}
             <div style={{ overflow: 'hidden' }}>
             <Drawer closeOnOverlayClick={false} size={'md'} isOpen={isOuterDrawerOpen} onClose={closeOuterDrawer} placement='right'>
